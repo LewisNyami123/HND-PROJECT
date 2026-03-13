@@ -25,6 +25,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminResults from './pages/AdminResults';
 import TakeExam from './pages/TakeExam';
 import FacultyCreateCA from './pages/FacultyCreateCA';
+import Register from './pages/Register';
 
 const App = () => {
   const token = localStorage.getItem('token');
@@ -91,6 +92,8 @@ const App = () => {
             <Route path="admin/analytics" element={<AdminAnalytics />} />
             <Route path="admin/results"element = {<AdminResults />} />
              <Route path="admin/profile" element={<Profile />} />
+             <Route path='admin/register' element={<Register/>} />
+              {/* Default admin route */}
             <Route index element={<Navigate to="admin/users" replace />} />
           </>
         )}
