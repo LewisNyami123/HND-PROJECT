@@ -1,0 +1,38 @@
+.countdown-title.urgent {
+  color: red;
+  animation: blink 1s infinite;
+}
+
+.countdown-title.soon {
+  color: orange;
+}
+
+.countdown-title.normal {
+  color: green;
+}
+.countdown-display {
+  margin: 0.75rem 0;
+  font-size: 1.1rem;
+  text-align: center;
+}
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.starting-soon {
+  color: #d32f2f;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.countdown {
+  font-weight: 600;
+  color: #1976d2;
+}

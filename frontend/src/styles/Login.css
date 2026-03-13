@@ -1,0 +1,353 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
+  font-family: 'Inter', 'Poppins', sans-serif;
+  min-height: 100vh;
+  color: #2c3e50;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  min-height: 600px;
+}
+
+/* ====================== LEFT SECTION ====================== */
+.login-left {
+  flex: 1;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f7f0 100%);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(79, 149, 81, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.logo-wrapper {
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-left img {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.login-left img:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(79, 149, 81, 0.2);
+}
+
+.login-left h1 {
+  font-size: 2.8rem;
+  color: #2e7d32;
+  margin-bottom: 12px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.login-left p {
+  font-size: 1.05rem;
+  color: #666;
+  max-width: 280px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ====================== RIGHT SECTION (FORM) ====================== */
+.login-form-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 48px;
+  position: relative;
+}
+
+.form-header {
+  margin-bottom: 36px;
+}
+
+.form-header h2 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.form-header p {
+  font-size: 0.95rem;
+  color: #999;
+  font-weight: 400;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  color: #2c3e50;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.form-group input {
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  font-family: 'Inter', sans-serif;
+}
+
+.form-group input::placeholder {
+  color: #bbb;
+}
+
+.form-group input:focus {
+  border-color: #4f9751;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(79, 149, 81, 0.1);
+}
+
+.form-group input:hover:not(:focus) {
+  border-color: #ccc;
+}
+
+.login-button {
+  width: 100%;
+  background: linear-gradient(135deg, #4f9751 0%, #2e7d32 100%);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-top: 12px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 15px rgba(79, 149, 81, 0.25);
+}
+
+.login-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(79, 149, 81, 0.35);
+}
+
+.login-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(79, 149, 81, 0.25);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.forgot-password {
+  font-size: 0.9rem;
+  color: #4f9751;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.forgot-password:hover {
+  color: #2e7d32;
+  text-decoration: underline;
+}
+/* ====================== RESPONSIVE ====================== */
+@media (max-width: 1024px) {
+  .login-container {
+    min-height: auto;
+  }
+
+  .login-left {
+    padding: 50px 30px;
+  }
+
+  .login-form-wrapper {
+    padding: 50px 36px;
+  }
+
+  .login-left h1 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .login-left {
+    padding: 40px 30px;
+    min-height: 320px;
+    justify-content: center;
+  }
+
+  .login-form-wrapper {
+    padding: 40px 30px;
+  }
+
+  .login-left img {
+    max-width: 200px;
+  }
+
+  .login-left h1 {
+    font-size: 2rem;
+  }
+
+  .login-left p {
+    font-size: 1rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 12px;
+  }
+
+  .login-container {
+    border-radius: 16px;
+    min-height: auto;
+  }
+
+  .login-left {
+    padding: 30px 20px;
+    min-height: 280px;
+  }
+
+  .login-form-wrapper {
+    padding: 30px 20px;
+  }
+
+  .logo-wrapper {
+    margin-bottom: 20px;
+  }
+
+  .login-left img {
+    max-width: 160px;
+  }
+
+  .login-left h1 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+
+  .login-left p {
+    font-size: 0.9rem;
+  }
+
+  .form-header {
+    margin-bottom: 28px;
+  }
+
+  .form-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .form-header p {
+    font-size: 0.85rem;
+  }
+
+  .form-group input,
+  .login-button {
+    font-size: 0.95rem;
+    padding: 11px 14px;
+  }
+
+  .login-form {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .login-left {
+    padding: 25px 16px;
+  }
+
+  .login-form-wrapper {
+    padding: 25px 16px;
+  }
+
+  .login-left h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+  }
+}
