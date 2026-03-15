@@ -1,6 +1,10 @@
 const Exam = require('../models/Exam');
 const Result = require('../models/Result');
-const Question = require('../models/Questions'); // <-- new model for question bank
+const Question = require('../models/Questions');
+const User = require('../models/User'); // for students
+const { Parser } = require("json2csv");
+const ExcelJS = require("exceljs");
+const PDFDocument = require("pdfkit");
 
 // 📋 Get all exams created by this faculty
 const getFacultyExams = async (req, res) => {
@@ -12,11 +16,13 @@ const getFacultyExams = async (req, res) => {
   }
 };
 
-// 📊 Get all results for this faculty’s exams
+// 📊 Get all results for this faculty’s department
 const getFacultyResults = async (req, res) => {
   try {
-    const results = await Result.find({ faculty: req.user._id })
-      .populate('student exam');
+    const results = await Result.find()
+      .populate('student', 'name department')
+      .populate('exam', 'title course');
+
     res.json(results);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -29,7 +35,7 @@ const createExamForFaculty = async (req, res) => {
     const exam = new Exam({
       ...req.body,
       faculty: req.user._id,
-      questions: req.body.questions // array of Question ObjectIds
+      questions: req.body.questions
     });
     await exam.save();
     res.status(201).json(exam);
@@ -77,24 +83,18 @@ const deleteExam = async (req, res) => {
 };
 
 // 📝 Create a new question in the faculty’s question bank
-// 📝 Create a new question in the faculty’s question bank
 const createQuestion = async (req, res) => {
   try {
     const question = new Question({
       ...req.body,
       faculty: req.user._id,
-      content: req.body.content || "<p>Placeholder content</p>", // ensure required field
+      content: req.body.content || "<p>Placeholder content</p>",
       images: req.body.images || []
     });
 
     await question.save();
-    console.log("Saved question:", question);
     res.status(201).json(question);
   } catch (err) {
-    console.error("Create question error:", err);
-    if (err.name === 'ValidationError') {
-      return res.status(400).json({ message: err.message });
-    }
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -146,6 +146,70 @@ const deleteQuestion = async (req, res) => {
   }
 };
 
+// 👩‍🎓 Get students in faculty’s department
+const getFacultyStudents = async (req, res) => {
+  try {
+    const students = await User.find({ role: "student", department: req.user.department });
+    res.json(students);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// 📤 Export results (CSV, Excel, PDF)
+const exportFacultyResults = async (req, res) => {
+  try {
+    const format = req.query.format || "csv";
+    const results = await Result.find().populate("student", "name department").populate("exam", "title course");
+
+    const data = results.map(r => ({
+      Student: r.student.name,
+      Department: r.student.department,
+      Course: r.exam.course,
+      Exam: r.exam.title,
+      CA: r.caScore,
+      ExamScore: r.examScore,
+      Total: r.total,
+      Grade: r.grade
+    }));
+
+    if (format === "csv") {
+      const parser = new Parser();
+      const csv = parser.parse(data);
+      res.header("Content-Type", "text/csv");
+      res.attachment("results.csv");
+      return res.send(csv);
+    }
+
+    if (format === "xlsx") {
+      const workbook = new ExcelJS.Workbook();
+      const sheet = workbook.addWorksheet("Results");
+      sheet.columns = Object.keys(data[0]).map(key => ({ header: key, key }));
+      sheet.addRows(data);
+      res.header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      res.attachment("results.xlsx");
+      await workbook.xlsx.write(res);
+      return res.end();
+    }
+
+    if (format === "pdf") {
+      const doc = new PDFDocument();
+      res.header("Content-Type", "application/pdf");
+      res.attachment("results.pdf");
+      doc.pipe(res);
+      data.forEach(row => {
+        doc.text(`${row.Student} | ${row.Department} | ${row.Course} | CA:${row.CA} | Exam:${row.ExamScore} | Total:${row.Total} | Grade:${row.Grade}`);
+      });
+      doc.end();
+      return;
+    }
+
+    res.status(400).json({ message: "Invalid format" });
+  } catch (err) {
+    res.status(500).json({ message: "Error exporting results" });
+  }
+};
+
 module.exports = {
   getFacultyExams,
   getFacultyResults,
@@ -157,5 +221,7 @@ module.exports = {
   getFacultyQuestions,
   deleteQuestion,
   updateQuestion,
-  getSingleQuestion
+  getSingleQuestion,
+  getFacultyStudents,
+  exportFacultyResults
 };

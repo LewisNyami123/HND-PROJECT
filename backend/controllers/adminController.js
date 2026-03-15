@@ -4,20 +4,25 @@ const User = require('../models/User');
 const Result = require('../models/Result');
 const Exam = require('../models/Exam');
 
-// Get all results with populated student and exam data
+// Utility for GPA calculation
+function gradePoint(grade) {
+  switch (grade) {
+    case "A": return 4;
+    case "B": return 3;
+    case "C": return 2;
+    case "D": return 1;
+    default: return 0;
+  }
+}
+
+// 📊 Get all results with populated student and exam data
 const getAllResults = async (req, res) => {
   try {
     const results = await Result.find()
-      .populate({
-        path: 'student',
-        select: 'name email role level',
-      })
-      .populate({
-        path: 'exam',
-        select: 'title course level',
-      })
-      .sort({ submissionTime: -1 }) // Newest first
-      .lean(); // Improves performance for read-only data
+      .populate({ path: 'student', select: 'name email role level department' })
+      .populate({ path: 'exam', select: 'title course level department' })
+      .sort({ submissionTime: -1 })
+      .lean();
 
     res.status(200).json(results);
   } catch (err) {
@@ -26,11 +31,11 @@ const getAllResults = async (req, res) => {
   }
 };
 
-// Get all users (for Admin Users Management page)
+// 👥 Get all users (for Admin Users Management page)
 const manageUsers = async (req, res) => {
   try {
     const users = await User.find()
-      .select('name email role level createdAt')
+      .select('name email role level department createdAt')
       .sort({ createdAt: -1 })
       .lean();
 
@@ -41,7 +46,7 @@ const manageUsers = async (req, res) => {
   }
 };
 
-// Create a new exam
+// ➕ Create a new exam
 const createExam = async (req, res) => {
   try {
     const exam = new Exam(req.body);
@@ -57,17 +62,16 @@ const createExam = async (req, res) => {
   }
 };
 
-// Generate analytics: pass rate per exam
+// 📈 Generate analytics: pass rate per exam + GPA distribution
 const getAnalytics = async (req, res) => {
   try {
     const results = await Result.find()
-      .populate({
-        path: 'exam',
-        select: 'title',
-      })
+      .populate({ path: 'exam', select: 'title' })
+      .populate({ path: 'student', select: 'name department' })
       .lean();
 
     const exams = {};
+    const gpaBuckets = { "0-1": 0, "1-2": 0, "2-3": 0, "3-4": 0 };
 
     results.forEach((r) => {
       const examTitle = r.exam?.title || 'Unknown';
@@ -75,10 +79,17 @@ const getAnalytics = async (req, res) => {
         exams[examTitle] = { total: 0, passed: 0 };
       }
       exams[examTitle].total++;
-      if (r.score >= 50) exams[examTitle].passed++;
+      if (r.total >= 50) exams[examTitle].passed++;
+
+      // GPA distribution bucket
+      const gp = gradePoint(r.grade);
+      if (gp < 1) gpaBuckets["0-1"]++;
+      else if (gp < 2) gpaBuckets["1-2"]++;
+      else if (gp < 3) gpaBuckets["2-3"]++;
+      else gpaBuckets["3-4"]++;
     });
 
-    const analytics = Object.keys(exams).map((title) => {
+    const examAnalytics = Object.keys(exams).map((title) => {
       const { total, passed } = exams[title];
       const passRate = total > 0 ? Math.round((passed / total) * 100) : 0;
       return {
@@ -90,32 +101,50 @@ const getAnalytics = async (req, res) => {
       };
     });
 
-    // Optional: Sort by pass rate or title
-    analytics.sort((a, b) => b.passRate - a.passRate);
+    examAnalytics.sort((a, b) => b.passRate - a.passRate);
 
-    res.status(200).json(analytics);
+    res.status(200).json({
+      exams: examAnalytics,
+      gpaDistribution: gpaBuckets
+    });
   } catch (err) {
     console.error('Error generating analytics:', err);
     res.status(500).json({ message: 'Failed to generate analytics' });
   }
 };
 
-// Delete a user (admin only)
+// 📊 System overview stats
+const getSystemStats = async (req, res) => {
+  try {
+    const studentCount = await User.countDocuments({ role: "student" });
+    const facultyCount = await User.countDocuments({ role: "faculty" });
+    const adminCount = await User.countDocuments({ role: "admin" });
+    const examCount = await Exam.countDocuments();
+
+    res.status(200).json({
+      students: studentCount,
+      faculty: facultyCount,
+      admins: adminCount,
+      exams: examCount
+    });
+  } catch (err) {
+    console.error("Error fetching system stats:", err);
+    res.status(500).json({ message: "Failed to fetch system stats" });
+  }
+};
+
+// ❌ Delete a user (admin only)
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
     const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Prevent deleting self
     if (user._id.toString() === req.user._id.toString()) {
       return res.status(400).json({ message: 'You cannot delete yourself' });
     }
 
-    // Prevent deleting the last admin
     if (user.role === 'admin') {
       const adminCount = await User.countDocuments({ role: 'admin' });
       if (adminCount <= 1) {
@@ -124,7 +153,6 @@ const deleteUser = async (req, res) => {
     }
 
     await User.findByIdAndDelete(id);
-
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (err) {
     console.error('Error deleting user:', err);
@@ -132,7 +160,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// Update user role (admin only)
+// 🔄 Update user role (admin only)
 const updateUserRole = async (req, res) => {
   try {
     const { id } = req.params;
@@ -143,11 +171,8 @@ const updateUserRole = async (req, res) => {
     }
 
     const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Optional: Prevent demoting the last admin
     if (user.role === 'admin' && role !== 'admin') {
       const adminCount = await User.countDocuments({ role: 'admin' });
       if (adminCount <= 1) {
@@ -178,6 +203,7 @@ module.exports = {
   manageUsers,
   createExam,
   getAnalytics,
+  getSystemStats,
   deleteUser,
   updateUserRole,
 };

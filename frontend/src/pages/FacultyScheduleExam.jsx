@@ -10,8 +10,8 @@ function FacultyScheduleExam() {
   const [form, setForm] = useState({
     title: "",
     course: "",
-    faculty: "",
     level: "",
+    department: "",
     duration: "",
     scheduledTime: "",
     roomId: ""
@@ -56,6 +56,7 @@ function FacultyScheduleExam() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      console.log('sending token',token)
       await axios.post("http://localhost:5000/api/exams/schedule", form, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -63,8 +64,8 @@ function FacultyScheduleExam() {
       setForm({
         title: "",
         course: "",
-        faculty: "",
         level: "",
+        department: "",
         duration: "",
         scheduledTime: "",
         roomId: ""
@@ -82,6 +83,16 @@ function FacultyScheduleExam() {
           <input name="title" placeholder="Exam Title" value={form.title} onChange={handleChange} />
           <input name="course" placeholder="Course" value={form.course} onChange={handleChange} />
           <input name="level" placeholder="Level (e.g. 200)" value={form.level} onChange={handleChange} />
+          <select name="department" id="" value={form.department} onChange={handleChange}>
+            <option value="">Select Department</option>
+              <option value="Computer Engineering">Computer Engineering</option>
+              <option value="Laboratory Technician">Laboratory Technician</option>
+              <option value="Electric Engineering">Electric Engineering</option>
+              <option value="Midwife">Midwife</option>
+              <option value="Nursing">Nursing</option>
+              <option value="Public Health">Public Health</option>
+              <option value="Agricultural Engineering">Agricultural Engineering</option>
+          </select>
           <input type="number" name="duration" placeholder="Duration (minutes)" value={form.duration} onChange={handleChange} />
           <input type="datetime-local" name="scheduledTime" value={form.scheduledTime} onChange={handleChange} />
 

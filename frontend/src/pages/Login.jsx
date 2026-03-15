@@ -28,6 +28,7 @@ const Login = () => {
       localStorage.setItem('token',response.data.token);
       localStorage.setItem('role',response.data.user.role);
       localStorage.setItem("level", response.data.user.level);
+      localStorage.setItem("department", response.data.user.department);
 
        // Show toast notification
         toast.success("Login successful!");

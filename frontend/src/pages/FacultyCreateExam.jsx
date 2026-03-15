@@ -226,6 +226,7 @@ useEffect(() => {
               <option value="Level 200">Level 200</option>
               <option value="Level 300">Level 300</option>
               <option value="Level 400">Level 400</option>
+              <option value="HND1">HND1</option>
             </select>
 
             <label>Duration (minutes)</label>

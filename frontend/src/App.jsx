@@ -26,6 +26,11 @@ import AdminResults from './pages/AdminResults';
 import TakeExam from './pages/TakeExam';
 import FacultyCreateCA from './pages/FacultyCreateCA';
 import Register from './pages/Register';
+import StudentDashboard from './pages/StudentDashboard';
+import FacultyDashboard from './pages/FacultyDashboard';
+import AdminDashboard from './pages/AdminDashboard';
+import FacultyStudent from './pages/FacultyStudent';
+import FacultyResults from './pages/FacultyResults';
 
 const App = () => {
   const token = localStorage.getItem('token');
@@ -63,6 +68,7 @@ const App = () => {
           {/* Student routes */}
           {role === "student" && (
             <>
+               <Route path="dashboard" element={<StudentDashboard />} />
               <Route path="exams" element={<Exams />} />
               <Route path="results" element={<Results />} />
                <Route path="countdown" element={<CountdownPage  />} />
@@ -74,27 +80,31 @@ const App = () => {
           {/* Faculty routes */}
          {role === "faculty" && (
           <>
-            <Route path="falculty/create" element={<FacultyCreateExam />} />
-            <Route path="falculty/createCA" element={<FacultyCreateCA />} />
-            <Route path="falculty/rooms" element={<FacultyRooms />} />
-            <Route path="falculty/questions" element={<FacultyQuestions />} />
-            <Route path="falculty/schedule" element={<FacultyScheduleExam />} />
-            <Route path="falculty/profile" element={<Profile />} />
+            <Route path="faculty/dashboard" element={<FacultyDashboard />} />
+            <Route path="faculty/create" element={<FacultyCreateExam />} />
+            <Route path="faculty/createCA" element={<FacultyCreateCA />} />
+            <Route path="faculty/rooms" element={<FacultyRooms />} />
+            <Route path="faculty/questions" element={<FacultyQuestions />} />
+            <Route path="faculty/schedule" element={<FacultyScheduleExam />} />
+            <Route path="faculty/profile" element={<Profile />} />
+            <Route path="faculty/students" element={<FacultyStudent />} />
+            <Route path="faculty/results" element={<FacultyResults />} />
             {/* Default faculty route */}
-            <Route index element={<Navigate to="falculty/create" replace />} />
+            <Route index element={<Navigate to="faculty/dashboard" replace />} />
           </>
     )}
 
           {/* Admin routes (placeholder) */}
                 {role === "admin" && (
           <>
+            <Route path="admin/dashboard" element={<AdminDashboard />} />
             <Route path="admin/users" element={<AdminUsers />} />
             <Route path="admin/analytics" element={<AdminAnalytics />} />
             <Route path="admin/results"element = {<AdminResults />} />
              <Route path="admin/profile" element={<Profile />} />
              <Route path='admin/register' element={<Register/>} />
               {/* Default admin route */}
-            <Route index element={<Navigate to="admin/users" replace />} />
+            <Route index element={<Navigate to="admin/dashboard" replace />} />
           </>
         )}
 

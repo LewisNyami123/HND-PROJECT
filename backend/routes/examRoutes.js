@@ -21,7 +21,7 @@ router.get('/take/:id', getExamForTaking);
 // POST: Schedule/create new exam — only faculty or admin
 router.post(
   '/schedule',
-  restrictTo('falculty', 'admin'), // Fixed typo: 'falculty' → 'faculty'
+  restrictTo('faculty', 'admin'), // Fixed typo: 'falculty' → 'faculty'
   scheduleExam
 );
 

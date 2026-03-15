@@ -1,30 +1,25 @@
-const CA = require("../models/CA");
+// controllers/caController.js
+const { upsertResult } = require("./resultController");
 
-const createCA = async (req, res) => {
+// Faculty enters CA marks (out of 30)
+const submitCA = async (req, res) => {
   try {
-    const ca = await CA.create({
-      title: req.body.title,
-      course: req.body.course,
-      date: req.body.date,
-      score: req.body.score,
-      maxScore: req.body.maxScore,
-      student: req.body.student,
-      faculty: req.user._id,
-      semester: req.body.semester
-    });
-    res.status(201).json(ca);
+    const { examId, studentId, caScore, credits } = req.body;
+
+    if (!caScore || caScore > 30) {
+      return res.status(400).json({ message: "CA score must be provided and <= 30" });
+    }
+
+    // Delegate to ResultController
+    return upsertResult({
+      body: { examId, studentId, caScore, credits },
+      user: req.user
+    }, res);
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Submit CA error:", err);
+    res.status(500).json({ message: "Failed to submit CA score" });
   }
 };
 
-const getCAForFaculty = async (req, res) => {
-  try {
-    const caRecords = await CA.find({ faculty: req.user._id }).populate("student");
-    res.status(200).json(caRecords);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-module.exports = { createCA, getCAForFaculty };
+module.exports = { submitCA };

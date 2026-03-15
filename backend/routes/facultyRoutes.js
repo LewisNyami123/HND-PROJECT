@@ -52,7 +52,7 @@ router.put('/questions/:id', protect, restrictTo('faculty'), updateQuestion);
 router.delete('/questions/:id', protect, restrictTo('faculty'), deleteQuestion);
 
 // GET /api/faculty/exams
-router.get("/exams", protect, getExamsForFaculty);
+router.get("/my-exams", protect, getExamsForFaculty);
 
 // CA routes
 router.post("/ca", protect, createCA);

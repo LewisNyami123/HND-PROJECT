@@ -67,7 +67,7 @@ body {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
 }
 
 .notification-btn,

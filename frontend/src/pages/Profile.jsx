@@ -52,6 +52,7 @@ function Profile() {
       formData.append("name", user.name);
       formData.append("email", user.email);
       formData.append("level", user.level);
+      formData.append("department",user.department);
       if (photoFile) {
         formData.append("photo", photoFile);
       }
@@ -109,6 +110,13 @@ function Profile() {
                 <strong>Level</strong>
                 <input type="text" name="level" value={user.level || ""} onChange={handleChange} placeholder="e.g., Level 200" />
               </label>
+              <label >
+                <strong>Department</strong>
+                <select name="department" value={user.department|| ""} onChange={handleChange} placeholder='Adminstrator'>
+                  <option value="select department">Select Department</option>
+                  <option value="Administrator">Administrator</option>
+                </select>
+              </label>
               <label>
                 <strong>Upload Photo</strong>
                 <input type="file" accept="image/*" onChange={handlePhotoUpload} />
@@ -125,6 +133,7 @@ function Profile() {
               <p><strong>Email:</strong> {user.email}</p>
               <p><strong>Level:</strong> {user.level || "Not set"}</p>
               <p><strong>Role:</strong> {user.role.charAt(0).toUpperCase() + user.role.slice(1)}</p>
+              <p><strong>Department:</strong> {user.department || "Not set"}</p>
               <button className="edit-btn" onClick={() => setIsEditing(true)}>
                 <FaEdit className="mr-2" />
                 Edit Profile

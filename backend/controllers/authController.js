@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 
 const registerUser = async (req, res) => {
-  const { name, email, password, role, level } = req.body;
+  const { name, email, password, role, level, department } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -15,15 +15,15 @@ const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const user = new User({ name, email, password: hashedPassword, role, level });
+    const user = new User({ name, email, password: hashedPassword, role, level, department});
     await user.save();
 
     // Generate token immediately
-    const token = jwt.sign({ id: user._id, role: user.role, level: user.level }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id, role: user.role, level: user.level, department: user.department }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(201).json({
       token,
-      user: { id: user._id, name: user.name, role: user.role, level: user.level }
+      user: { id: user._id, name: user.name, role: user.role, level: user.level, department: user.department }
     });
   } catch (err) {
     console.error("Register error:", err);
@@ -46,12 +46,13 @@ const loginUser = async (req, res)=>{
         const token = jwt.sign({
             id: user._id,
             role: user.role,
-            level: user.level
+            level: user.level,
+            department: user.department
            }, process.env.JWT_SECRET, {
                 expiresIn: '1h'
             });
 
-            res.json({token, user: {id: user._id, name: user.name, role: user.role, level: user.level}});
+            res.json({token, user: {id: user._id, name: user.name, role: user.role, level: user.level, department: user.department}});
     } catch(err){
         res.status(500).json({message:err.message});
 

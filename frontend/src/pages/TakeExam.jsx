@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaClock, FaPaperPlane, FaCheckCircle } from "react-icons/fa";
@@ -40,7 +40,7 @@ function TakeExam() {
   };
 
   // Handle submit (manual or auto)
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     if (submitted) return;
     setSubmitted(true);
 
@@ -66,7 +66,7 @@ function TakeExam() {
       toast.error("Failed to submit exam. Your answers may not be saved.");
       setSubmitted(false); // Allow retry
     }
-  };
+  });
 
   // Fetch exam data
   useEffect(() => {
@@ -104,7 +104,7 @@ function TakeExam() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [loading, submitted, timeLeft]);
+  }, [loading, submitted, timeLeft,handleSubmit] );
 
   // Loading state
   if (loading) {
