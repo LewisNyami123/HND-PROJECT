@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaUserGraduate, FaEdit } from "react-icons/fa";
+import { FaUserGraduate, FaEdit, FaLock } from "react-icons/fa";
 import "../styles/Profile.css";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -9,6 +9,10 @@ function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [photoFile, setPhotoFile] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Password change state
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -52,7 +56,7 @@ function Profile() {
       formData.append("name", user.name);
       formData.append("email", user.email);
       formData.append("level", user.level);
-      formData.append("department",user.department);
+      formData.append("department", user.department);
       if (photoFile) {
         formData.append("photo", photoFile);
       }
@@ -73,8 +77,22 @@ function Profile() {
     }
   };
 
-  if (loading) return <p className="text-center mt-12">Loading profile...</p>;
+  const handleChangePassword = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.patch("http://localhost:5000/api/users/change-password",
+        { oldPassword, newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      toast.success("Password updated successfully!");
+      setOldPassword("");
+      setNewPassword("");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to change password");
+    }
+  };
 
+  if (loading) return <p className="text-center mt-12">Loading profile...</p>;
   if (!user) return <p className="text-center mt-12 text-red-600">Unable to load profile</p>;
 
   return (
@@ -110,17 +128,17 @@ function Profile() {
                 <strong>Level</strong>
                 <input type="text" name="level" value={user.level || ""} onChange={handleChange} placeholder="e.g., Level 200" />
               </label>
-              <label >
+              <label>
                 <strong>Department</strong>
-                <select name="department" value={user.department|| ""} onChange={handleChange} placeholder='Adminstrator'>
-                  <option value="select department">Select Department</option>
-                 <option value="Computer Engineering">Computer Engineering</option>
-              <option value="Laboratory Technician">Laboratory Technician</option>
-              <option value="Electric Engineering">Electric Engineering</option>
-              <option value="Midwife">Midwife</option>
-              <option value="Nursing">Nursing</option>
-              <option value="Public Health">Public Health</option>
-              <option value="Agricultural Engineering">Agricultural Engineering</option>
+                <select name="department" value={user.department || ""} onChange={handleChange}>
+                  <option value="">Select Department</option>
+                  <option value="Computer Engineering">Computer Engineering</option>
+                  <option value="Laboratory Technician">Laboratory Technician</option>
+                  <option value="Electric Engineering">Electric Engineering</option>
+                  <option value="Midwife">Midwife</option>
+                  <option value="Nursing">Nursing</option>
+                  <option value="Public Health">Public Health</option>
+                  <option value="Agricultural Engineering">Agricultural Engineering</option>
                   <option value="Administrator">Administrator</option>
                 </select>
               </label>
@@ -139,7 +157,7 @@ function Profile() {
               <p><strong>Name:</strong> {user.name}</p>
               <p><strong>Email:</strong> {user.email}</p>
               <p><strong>Level:</strong> {user.level || "Not set"}</p>
-              <p><strong>Role:</strong> {user.role.charAt(0).toUpperCase() + user.role.slice(1)}</p>
+              <p><strong>Role:</strong> {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}</p>
               <p><strong>Department:</strong> {user.department || "Not set"}</p>
               <button className="edit-btn" onClick={() => setIsEditing(true)}>
                 <FaEdit className="mr-2" />
@@ -148,6 +166,24 @@ function Profile() {
             </>
           )}
         </div>
+      </div>
+
+      {/* Password Change Section */}
+      <div className="password-card">
+        <h3><FaLock className="mr-2" /> Change Password</h3>
+        <input
+          type="password"
+          placeholder="Old Password"
+          value={oldPassword}
+          onChange={(e) => setOldPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="New Password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <button className="save-btn" onClick={handleChangePassword}>Update Password</button>
       </div>
     </div>
   );
