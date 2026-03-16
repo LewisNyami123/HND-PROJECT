@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/Exams.css";
-import Countdown from "./Countdown"; // We'll update this next if needed
+import Countdown from "./Countdown";
 import { toast } from "react-toastify";
 import { FaClock, FaPlayCircle, FaCheckCircle } from "react-icons/fa";
 
@@ -9,6 +10,7 @@ function Exams() {
   const [exams, setExams] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchExams = async () => {
@@ -17,7 +19,6 @@ function Exams() {
         const res = await axios.get("http://localhost:5000/api/exams", {
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log("Fetched exams:", res.data);
         setExams(res.data);
       } catch (err) {
         console.error("Failed to load exams", err);
@@ -27,7 +28,7 @@ function Exams() {
     fetchExams();
   }, []);
 
-  // 🔎 Helpers
+  // Helpers
   const getStatus = (scheduledTime, duration) => {
     const start = new Date(scheduledTime);
     const end = new Date(start.getTime() + duration * 60000);
@@ -38,36 +39,6 @@ function Exams() {
     return "completed";
   };
 
-  const getProgress = (scheduledTime, duration) => {
-    const start = new Date(scheduledTime);
-    const now = new Date();
-    const end = new Date(start.getTime() + duration * 60000);
-    const total = end - start;
-    const elapsed = now - start;
-    if (elapsed <= 0) return 0;
-    if (elapsed >= total) return 100;
-    return Math.floor((elapsed / total) * 100);
-  };
-
-  const getProgressColor = (progress) => {
-    if (progress < 50) return "#4caf50";     // green
-    if (progress < 80) return "#ff9800";     // orange
-    return "#f44336";                        // red
-  };
-
-  // 🔔 Toast for exams starting soon (< 30 mins)
-  useEffect(() => {
-    exams.forEach(exam => {
-      const diff = new Date(exam.scheduledTime) - new Date();
-      if (diff > 0 && diff <= 30 * 60 * 1000) {
-        toast.info(`Exam "${exam.title}" starts in less than 30 minutes!`, {
-          toastId: exam._id // Prevent duplicates
-        });
-      }
-    });
-  }, [exams]);
-
-  // Can student start the exam?
   const canStartExam = (scheduledTime, duration) => {
     const start = new Date(scheduledTime);
     const end = new Date(start.getTime() + duration * 60000);
@@ -78,7 +49,7 @@ function Exams() {
            (now < start && (start - now) <= 15 * 60 * 1000);
   };
 
-  // 🔎 Filtering
+  // Filtering
   const filteredExams = exams.filter(exam => {
     const matchesSearch =
       exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -90,7 +61,7 @@ function Exams() {
     return matchesSearch && matchesStatus;
   });
 
-  // 📊 Summary counts
+  // Summary counts
   const summary = {
     pending: exams.filter(e => getStatus(e.scheduledTime, e.duration) === "pending").length,
     ongoing: exams.filter(e => getStatus(e.scheduledTime, e.duration) === "ongoing").length,
@@ -104,7 +75,7 @@ function Exams() {
         <p>Track your upcoming exams, progress, and status at a glance.</p> 
       </div>
 
-      {/* 🔎 Search + Filter */}
+      {/* Search + Filter */}
       <div className="search-filter">
         <input
           type="text"
@@ -120,7 +91,7 @@ function Exams() {
         </select>
       </div>
 
-      {/* 📊 Summary Dashboard */}
+      {/* Summary Dashboard */}
       <div className="summary-dashboard">
         <span className="badge pending">
           <FaClock /> Pending: {summary.pending}
@@ -133,7 +104,7 @@ function Exams() {
         </span>
       </div>
 
-      {/* 📋 Exam List */}
+      {/* Exam List */}
       <div className="student-page">
         <h2>Upcoming Exams</h2>
         <div className="exam-list">
@@ -164,28 +135,21 @@ function Exams() {
                     </span>
                   </p>
 
-                  <div className="progress-bar">
-                    <div
-                      className="progress-fill"
-                      style={{
-                        width: `${getProgress(exam.scheduledTime, exam.duration)}%`,
-                        backgroundColor: getProgressColor(getProgress(exam.scheduledTime, exam.duration))
-                      }}
-                    ></div>
-                  </div>
-
                   {/* Action Button */}
                   <div className="exam-actions">
                     {showStartButton ? (
                       <button
                         className="start-exam-btn"
-                        onClick={() => window.location.href = `/take/${exam._id}`}
+                        onClick={() => navigate(`/take/${exam._id}`)}
                       >
                         <FaPlayCircle className="mr-2" />
                         Start Exam Now
                       </button>
                     ) : status === "completed" ? (
-                      <button className="view-result-btn" disabled>
+                      <button
+                        className="view-result-btn"
+                        onClick={() => navigate(`/results`)}
+                      >
                         View Result
                       </button>
                     ) : (

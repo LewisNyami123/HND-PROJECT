@@ -114,6 +114,13 @@ function Profile() {
                 <strong>Department</strong>
                 <select name="department" value={user.department|| ""} onChange={handleChange} placeholder='Adminstrator'>
                   <option value="select department">Select Department</option>
+                 <option value="Computer Engineering">Computer Engineering</option>
+              <option value="Laboratory Technician">Laboratory Technician</option>
+              <option value="Electric Engineering">Electric Engineering</option>
+              <option value="Midwife">Midwife</option>
+              <option value="Nursing">Nursing</option>
+              <option value="Public Health">Public Health</option>
+              <option value="Agricultural Engineering">Agricultural Engineering</option>
                   <option value="Administrator">Administrator</option>
                 </select>
               </label>

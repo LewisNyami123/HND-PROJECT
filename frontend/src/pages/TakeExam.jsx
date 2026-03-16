@@ -6,8 +6,7 @@ import "../styles/TakeExam.css";
 import { toast } from "react-toastify";
 
 function TakeExam() {
- const { examId } = useParams();
- console.log("ExamId from params:", examId);
+  const { examId } = useParams();
   const navigate = useNavigate();
 
   const [exam, setExam] = useState(null);
@@ -17,14 +16,14 @@ function TakeExam() {
   const [score, setScore] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Helper: Format time as MM:SS
+  // Format time as MM:SS
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Helper: Calculate score
+  // Calculate score locally
   const calculateScore = () => {
     if (!exam || !exam.questions) return 0;
     let correct = 0;
@@ -39,7 +38,7 @@ function TakeExam() {
     setAnswers((prev) => ({ ...prev, [questionId]: answer }));
   };
 
-  // Handle submit (manual or auto)
+  // Submit exam
   const handleSubmit = useCallback(async () => {
     if (submitted) return;
     setSubmitted(true);
@@ -55,20 +54,18 @@ function TakeExam() {
           answers,
           score: finalScore,
         },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setScore(finalScore);
     } catch (err) {
       console.error("Submit failed:", err);
       toast.error("Failed to submit exam. Your answers may not be saved.");
-      setSubmitted(false); // Allow retry
+      setSubmitted(false); // allow retry
     }
-  });
+  }, [submitted, exam, answers]);
 
-  // Fetch exam data
+  // Fetch exam
   useEffect(() => {
     const fetchExam = async () => {
       try {
@@ -80,55 +77,46 @@ function TakeExam() {
         setTimeLeft(res.data.timeLeftSeconds || 0);
         setLoading(false);
       } catch (err) {
-        console.error(err);
-        toast.error(err.response?.data?.message || "Cannot load exam. It may not be available.");
+        console.error("Failed to load exam:", err);
+        toast.error(err.response?.data?.message || "Cannot load exam.");
         navigate("/exams");
       }
     };
     fetchExam();
-    
   }, [examId, navigate]);
 
-  // Timer countdown + auto-submit
+  // Timer countdown
   useEffect(() => {
     if (loading || submitted || timeLeft <= 0) return;
-
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          handleSubmit(); // Auto-submit when time runs out
+          handleSubmit(); // auto-submit
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-
     return () => clearInterval(interval);
-  }, [loading, submitted, timeLeft,handleSubmit] );
+  }, [loading, submitted, timeLeft, handleSubmit]);
 
-  // Loading state
-  if (loading) {
-    return <div className="loading">Loading exam...</div>;
-  }
-console.log("Link to:", `/take/${exam._id}`);
-console.log("Exam ID:", exam._id);
-  // Submitted state
+  if (loading) return <div className="loading">Loading exam...</div>;
+
   if (submitted) {
+    setTimeout(() => navigate("/results"), 5000);
     return (
       <div className="submitted-screen">
         <FaCheckCircle className="icon success" />
         <h2>Exam Submitted!</h2>
         <p className="score">
-          Your score: <strong>{score ?? "Calculating..."}</strong> out of{" "}
+          Your score: <strong>{score ?? "Calculating..."}</strong> /{" "}
           <strong>{exam.questions.length}</strong>
         </p>
         <p>Redirecting to results in 5 seconds...</p>
-        {setTimeout(() => navigate("/results"), 5000)}
       </div>
     );
   }
 
-  // Main exam view
   return (
     <div className="take-exam">
       <div className="exam-header">
@@ -140,24 +128,21 @@ console.log("Exam ID:", exam._id);
       </div>
 
       <div className="questions">
-        {exam.questions.map((question, index) => (
-          <div key={question._id} className="question">
-            <h3>
-              Question {index + 1} of {exam.questions.length}
-            </h3>
-            <p className="question-text">{question.text}</p>
-
+        {exam.questions.map((q, idx) => (
+          <div key={q._id} className="question">
+            <h3>Question {idx + 1} of {exam.questions.length}</h3>
+            <p className="question-text">{q.text}</p>
             <div className="options">
-              {question.options.map((option, i) => (
+              {q.options.map((opt, i) => (
                 <label key={i} className="option">
                   <input
                     type="radio"
-                    name={question._id}
-                    value={option}
-                    checked={answers[question._id] === option}
-                    onChange={() => handleAnswer(question._id, option)}
+                    name={q._id}
+                    value={opt}
+                    checked={answers[q._id] === opt}
+                    onChange={() => handleAnswer(q._id, opt)}
                   />
-                  <span>{option}</span>
+                  <span>{opt}</span>
                 </label>
               ))}
             </div>
@@ -166,8 +151,7 @@ console.log("Exam ID:", exam._id);
       </div>
 
       <button className="submit-btn" onClick={handleSubmit}>
-        <FaPaperPlane />
-        Submit Exam
+        <FaPaperPlane /> Submit Exam
       </button>
     </div>
   );

@@ -103,72 +103,13 @@ function Layout({ role }) {
 
         <div className="header-right">
          {/* STUDENT */}
-    {role === "student" && (
-      <>
-        <Link to="/dashboard" className={isActive("/dashboard") ? "nav-link active" : "nav-link"}>
-          <FaHome />
-          <span>Dashboard</span>
-        </Link>
-
-        <Link to="/exams" className={isActive("/exams") ? "nav-link active" : "nav-link"}>
-          <FaBook />
-          <span>Exams</span>
-        </Link>
-
-        <Link to="/results" className={isActive("/results") ? "nav-link active" : "nav-link"}>
-          <FaChartLine />
-          <span>Results</span>
-        </Link>
-
-        <Link to="/countdown" className={isActive("/countdown") ? "nav-link active" : "nav-link"}>
-          <FaClock />
-          <span>Countdown</span>
-        </Link>
-
-        {/* Profile added */}
-        {/* <Link to="/profile" className={isActive("/profile") ? "nav-link active" : "nav-link"}>
-          <FaUserGraduate />
-          <span>Profile</span>
-        </Link> */}
-      </>
-    )}
-
+   
     {/* FACULTY */}
     {role === "faculty" && (
       <>
-        <Link to="/faculty/dashboard" className={isActive("/faculty/dashboard") ? "nav-link active" : "nav-link"}>
-          <FaHome />
-          <span>Dashboard</span>
-        </Link>
-
-        <Link to="/faculty/create" className={isActive("/faculty/create") ? "nav-link active" : "nav-link"}>
+        <Link to="/faculty/submitca" className={isActive("/faculty/submitca") ? "nav-link active" : "nav-link"}>
           <FaPlus />
-          <span>Create Exam</span>
-        </Link>
-
-        <Link to="/faculty/questions" className={isActive("/faculty/questions") ? "nav-link active" : "nav-link"}>
-          <FaDatabase />
-          <span>Question Bank</span>
-        </Link>
-
-        <Link to="/faculty/students" className={isActive("/faculty/students") ? "nav-link active" : "nav-link"}>
-          <FaUsers />
-          <span>Students</span>
-        </Link>
-
-        <Link to="/faculty/rooms" className={isActive("/faculty/rooms") ? "nav-link active" : "nav-link"}>
-          <FaUniversity />
-          <span>Rooms</span>
-        </Link>
-
-        <Link to="/faculty/schedule" className={isActive("/faculty/schedule") ? "nav-link active" : "nav-link"}>
-          <FaCalendarAlt />
-          <span>Schedule Exam</span>
-        </Link>
-
-        <Link to="/faculty/results" className={isActive("/faculty/results") ? "nav-link active" : "nav-link"}>
-          <FaChartBar />
-          <span>Results</span>
+          <span>Submit CA</span>
         </Link>
 
         {/* Profile added */}
@@ -179,40 +120,7 @@ function Layout({ role }) {
       </>
     )}
 
-    {/* ADMIN */}
-    {role === "admin" && (
-      <>
-        <Link to="/admin/dashboard" className={isActive("/admin/dashboard") ? "nav-link active" : "nav-link"}>
-          <FaHome />
-          <span>Dashboard</span>
-        </Link>
-
-        <Link to="/admin/users" className={isActive("/admin/users") ? "nav-link active" : "nav-link"}>
-          <FaUsers />
-          <span>Users</span>
-        </Link>
-
-        <Link to="/admin/results" className={isActive("/admin/results") ? "nav-link active" : "nav-link"}>
-          <FaChartBar />
-          <span>Results</span>
-        </Link>
-
-        <Link to="/admin/analytics" className={isActive("/admin/analytics") ? "nav-link active" : "nav-link"}>
-          <FaChartPie />
-          <span>Analytics</span>
-        </Link>
-
-        {/* Profile added */}
-        {/* <Link to="/admin/profile" className={isActive("/admin/profile") ? "nav-link active" : "nav-link"}>
-          <FaUserGraduate />
-          <span>Profile</span>
-        </Link> */}
-        <Link to="/admin/register" className={isActive("/admin/register") ? "nav-link active" : "nav-link"}>
-          <FaUsers />
-          <span>Register User</span>
-        </Link>
-      </>
-    )}
+   
           {/* Notifications */}
 
           <div className="notification-wrapper">

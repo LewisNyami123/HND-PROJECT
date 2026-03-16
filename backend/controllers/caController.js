@@ -21,5 +21,18 @@ const submitCA = async (req, res) => {
     res.status(500).json({ message: "Failed to submit CA score" });
   }
 };
+const getCAForFaculty = async (req, res) => {
+  try {
+    const results = await Result.find()
+      .populate("student", "name department")
+      .populate("exam", "title course faculty")
+      .where("exam.faculty").equals(req.user._id);
 
-module.exports = { submitCA };
+    res.json(results);
+  } catch (err) {
+    console.error("Get CA for faculty error:", err);
+    res.status(500).json({ message: "Failed to fetch CA results" });
+  }
+};
+
+module.exports = { submitCA , getCAForFaculty};

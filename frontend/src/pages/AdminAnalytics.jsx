@@ -16,7 +16,9 @@ function AdminAnalytics() {
         const res = await axios.get("http://localhost:5000/api/admin/analytics", {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setData(res.data);
+
+        // Backend returns { analytics: [...] }
+        setData(res.data.analytics || []);
       } catch (err) {
         console.error("Failed to fetch analytics", err);
       }
@@ -32,7 +34,7 @@ function AdminAnalytics() {
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="title" />
+              <XAxis dataKey="course" />
               <YAxis />
               <Tooltip />
               <Bar dataKey="passRate" fill="#82ca9d" />

@@ -32,6 +32,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import FacultyStudent from './pages/FacultyStudent';
 import FacultyResults from './pages/FacultyResults';
 
+
 const App = () => {
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role') || 'student';
@@ -74,6 +75,8 @@ const App = () => {
                <Route path="countdown" element={<CountdownPage  />} />
               <Route path="profile" element={<Profile />} />
               <Route path="/take/:examId" element={<TakeExam />} />
+              {/* Default student route */}
+              <Route index element={<Navigate to="dashboard" replace />} />
             </>
           )}
 
@@ -89,6 +92,7 @@ const App = () => {
             <Route path="faculty/profile" element={<Profile />} />
             <Route path="faculty/students" element={<FacultyStudent />} />
             <Route path="faculty/results" element={<FacultyResults />} />
+            <Route path="faculty/submitca" element={<FacultyCreateCA />} />
             {/* Default faculty route */}
             <Route index element={<Navigate to="faculty/dashboard" replace />} />
           </>

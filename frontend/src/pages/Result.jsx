@@ -7,30 +7,34 @@ function Results() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No token found");
-          setLoading(false);
-          return;
-        }
-
-        const res = await axios.get("http://localhost:5000/api/results", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        console.log("Fetched results:", res.data);
-        setResults(res.data);
+useEffect(() => {
+  const fetchResults = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found");
         setLoading(false);
-      } catch (err) {
-        console.error("Failed to load results:", err);
-        setLoading(false);
+        return;
       }
-    };
-    fetchResults();
-  }, []);
+
+      const res = await axios.get("http://localhost:5000/api/results", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log("Fetched results:", res.data);
+
+      // If backend wraps results in { results: [...] }
+      const payload = Array.isArray(res.data) ? res.data : res.data.results;
+      setResults(payload);
+      setLoading(false);
+    } catch (err) {
+      console.error("Failed to load results:", err);
+      setLoading(false);
+    }
+  };
+  fetchResults();
+}, []);
+
 
   const getStatus = (score) => (score >= 50 ? "passed" : "failed");
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Dashboard.css";
 
@@ -14,12 +14,13 @@ function StudentDashboard() {
     const fetchData = async () => {
       try {
         const [examRes, resultRes, notifRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/student/exams", { headers }),
-          axios.get("http://localhost:5000/api/student/results", { headers }),
+          axios.get("http://localhost:5000/api/exams", { headers }),
+          axios.get("http://localhost:5000/api/results", { headers }),
           axios.get("http://localhost:5000/api/notifications", { headers }),
         ]);
+
         setExams(examRes.data);
-        setResults(resultRes.data);
+        setResults(Array.isArray(resultRes.data) ? resultRes.data : resultRes.data.results);
         setNotifications(notifRes.data);
       } catch (err) {
         console.error("Error loading student dashboard", err);
@@ -30,53 +31,56 @@ function StudentDashboard() {
 
   return (
     <div className="dashboard">
-      <h2>Student Dashboard</h2>
+      <h2 className="dashboard-title">Student Dashboard</h2>
 
-      <section>
+      {/* Exams Card */}
+      <div className="card">
         <h3>Upcoming Exams</h3>
         {exams.length ? (
-          <ul>
+          <ul className="card-list">
             {exams.map(exam => (
-              <li key={exam._id}>
-                {exam.course} — {new Date(exam.date).toLocaleDateString()}
+              <li key={exam._id} className="card-item">
+                <strong>{exam.title}</strong> — {exam.course} <br />
+                <span className="date">
+                  {exam.scheduledTime
+                    ? new Date(exam.scheduledTime).toLocaleString()
+                    : "No date set"}
+                </span>
               </li>
             ))}
           </ul>
         ) : <p>No upcoming exams</p>}
-      </section>
+      </div>
 
-      <section>
+      {/* Results Card */}
+      <div className="card">
         <h3>Results</h3>
         {results.length ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Course</th><th>CA (30)</th><th>Exam (70)</th><th>Total</th><th>Grade</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map(r => (
-                <tr key={r._id}>
-                  <td>{r.course}</td>
-                  <td>{r.caScore}</td>
-                  <td>{r.examScore}</td>
-                  <td>{r.total}</td>
-                  <td>{r.grade}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="results-grid">
+            {results.map(r => (
+              <div key={r._id} className="result-card">
+                <h4>{r.exam?.title || r.course}</h4>
+                <p>CA: {r.caScore} / 30</p>
+                <p>Exam: {r.examScore} / 70</p>
+                <p>Total: {r.total}</p>
+                <p className={`grade grade-${r.grade}`}>Grade: {r.grade}</p>
+              </div>
+            ))}
+          </div>
         ) : <p>No results yet</p>}
-      </section>
+      </div>
 
-      <section>
+      {/* Notifications Card */}
+      <div className="card">
         <h3>Notifications</h3>
         {notifications.length ? (
-          <ul>
-            {notifications.map(n => <li key={n._id}>{n.text}</li>)}
+          <ul className="card-list">
+            {notifications.map(n => (
+              <li key={n._id} className="card-item">{n.text}</li>
+            ))}
           </ul>
         ) : <p>No notifications</p>}
-      </section>
+      </div>
     </div>
   );
 }

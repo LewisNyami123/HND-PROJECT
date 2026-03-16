@@ -1,9 +1,13 @@
+// routes/roomRoutes.js
 const express = require('express');
-const router = require('./authRoutes');
-const {protect} = require('../middleware/authMiddleware');
-const {createRoom, getRooms} = require('../controllers/roomController');
+const router = express.Router();
+const { protect, restrictTo } = require('../middleware/authMiddleware');
+const { createRoom, getRooms } = require('../controllers/roomController');
 
-router.post('/',protect,createRoom);
-router.get('/',protect,getRooms);
+// Faculty/Admin: create a new room
+router.post('/', protect, restrictTo('admin', 'faculty'), createRoom);
+
+// Faculty/Admin: view all rooms
+router.get('/', protect, restrictTo('admin', 'faculty'), getRooms);
 
 module.exports = router;
