@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import Layout from './components/Layout';
 import Exams from './pages/Exams';
 import Results from './pages/Result';
-import CountdownPage from './pages/CountDownPage';
+// import CountDownPage from './pages/CountDownPage';
 import Profile from './pages/Profile';
 import FacultyCreateExam from './pages/FacultyCreateExam';
 import FacultyRooms from './pages/FacultyRooms';
@@ -72,7 +72,7 @@ const App = () => {
                <Route path="dashboard" element={<StudentDashboard />} />
               <Route path="exams" element={<Exams />} />
               <Route path="results" element={<Results />} />
-               <Route path="countdown" element={<CountdownPage  />} />
+               <Route path="countdown" element={<CountDownPage  />} />
               <Route path="profile" element={<Profile />} />
               <Route path="/take/:examId" element={<TakeExam />} />
               {/* Default student route */}
