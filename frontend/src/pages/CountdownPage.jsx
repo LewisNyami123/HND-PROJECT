@@ -3,7 +3,7 @@ import axios from "axios";
 import Countdown from "./Countdown";
 import "../styles/Exams.css";
 
-function CountdownPage() {
+function CountDownPage() {
   const [nextExam, setNextExam] = useState(null);
 
   useEffect(() => {
@@ -45,4 +45,4 @@ function CountdownPage() {
   );
 }
 
-export default CountdownPage;
+export default CountDownPage;
