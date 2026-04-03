@@ -197,7 +197,28 @@ const updateUserRole = async (req, res) => {
     res.status(500).json({ message: 'Failed to update role' });
   }
 };
+const getStats = async (req, res) => {
+  try {
+    const studentsCount = await User.countDocuments({ role: "student" });
+    const facultyCount = await User.countDocuments({ role: "faculty" });
 
+    // ✅ Count distinct departments from User collection
+    const departments = await User.distinct("department");
+    const departmentsCount = departments.length;
+
+    const examsCount = await Exam.countDocuments();
+
+    res.json({
+      students: studentsCount,
+      faculty: facultyCount,
+      departments: departmentsCount,
+      exams: examsCount,
+    });
+  } catch (err) {
+    console.error("Error fetching stats:", err);
+    res.status(500).json({ message: "Server error fetching stats" });
+  }
+};
 module.exports = {
   getAllResults,
   manageUsers,
@@ -206,4 +227,5 @@ module.exports = {
   getSystemStats,
   deleteUser,
   updateUserRole,
+  getStats
 };

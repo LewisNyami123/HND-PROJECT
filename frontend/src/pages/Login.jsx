@@ -29,6 +29,7 @@ const Login = () => {
       localStorage.setItem('role',response.data.user.role);
       localStorage.setItem("level", response.data.user.level);
       localStorage.setItem("department", response.data.user.department);
+      localStorage.setItem("studentId", response.data.user.id);
 
        // Show toast notification
         toast.success("Login successful!");

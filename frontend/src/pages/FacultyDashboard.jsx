@@ -34,7 +34,7 @@ function FacultyDashboard() {
         {exams.length ? (
           <ul>
             {exams.map(exam => (
-              <li key={exam._id}>{exam.course} — {new Date(exam.date).toLocaleDateString()}</li>
+              <li key={exam._id}>{exam.course} — {new Date(exam.scheduledTime).toLocaleDateString()}</li>
             ))}
           </ul>
         ) : <p>No exams created</p>}
@@ -52,9 +52,9 @@ function FacultyDashboard() {
             <tbody>
               {results.map(r => (
                 <tr key={r._id}>
-                  <td>{r.studentName}</td>
-                  <td>{r.department}</td>
-                  <td>{r.course}</td>
+                  <td>{r.student?.name}</td>
+                  <td>{r.student?.department}</td>
+                  <td>{r.exam?.course}</td>
                   <td>{r.total}</td>
                   <td>{r.grade}</td>
                 </tr>

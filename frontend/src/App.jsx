@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import Layout from './components/Layout';
 import Exams from './pages/Exams';
 import Results from './pages/Result';
-// import CountDownPage from './pages/CountDownPage';
+import CountDownPage from './pages/CountDownPage';
 import Profile from './pages/Profile';
 import FacultyCreateExam from './pages/FacultyCreateExam';
 import FacultyRooms from './pages/FacultyRooms';
@@ -48,7 +48,7 @@ const App = () => {
           element={
             isAuthenticated
               ? role === "student"
-                ? <Navigate to="/exams" replace />
+                ? <Navigate to="/dashboard" replace />
                 : role === "faculty"
                 ? <Navigate to="/faculty" replace />
                 : <Navigate to="/admin" replace />
@@ -73,13 +73,13 @@ const App = () => {
               <Route path="exams" element={<Exams />} />
               <Route path="results" element={<Results />} />
                <Route path="countdown" element={<CountDownPage  />} />
-              <Route path="profile" element={<Profile />} />
+              <Route path="student/profile" element={<Profile />} />
               <Route path="/take/:examId" element={<TakeExam />} />
               {/* Default student route */}
               <Route index element={<Navigate to="dashboard" replace />} />
             </>
           )}
-
+               
           {/* Faculty routes */}
          {role === "faculty" && (
           <>
@@ -111,10 +111,14 @@ const App = () => {
             <Route index element={<Navigate to="admin/dashboard" replace />} />
           </>
         )}
-
+          <Route 
+    path="*" 
+    element={<Navigate to={role === 'admin' ? '/admin/dashboard' : role === 'faculty' ? '/faculty/dashboard' : '/dashboard'} replace />} 
+      />
         </Route>
 
         {/* Catch-all */}
+     
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

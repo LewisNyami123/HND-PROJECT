@@ -39,32 +39,42 @@ function TakeExam() {
   };
 
   // Submit exam
-  const handleSubmit = useCallback(async () => {
-    if (submitted) return;
-    setSubmitted(true);
+ const handleSubmit = useCallback(async () => {
+  if (submitted) return;
+  setSubmitted(true);
 
-    const finalScore = calculateScore();
+  const finalScore = calculateScore();
+  try {
+    const token = localStorage.getItem("token");
 
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:5000/api/results",
-        {
-          exam: exam._id,
-          answers,
-          score: finalScore,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+    // Get logged-in student ID from localStorage or a context
+    const studentId = localStorage.getItem("studentId"); // <-- ensure you store this when logging in
 
-      setScore(finalScore);
-    } catch (err) {
-      console.error("Submit failed:", err);
-      toast.error("Failed to submit exam. Your answers may not be saved.");
-      setSubmitted(false); // allow retry
+    if (!studentId) {
+      toast.error("Cannot find your student ID. Please re-login.");
+      setSubmitted(false);
+      return;
     }
-  }, [submitted, exam, answers]);
 
+    await axios.post(
+      "http://localhost:5000/api/results",
+      {
+        examId: exam._id,   // backend expects examId
+        studentId,          // backend expects studentId
+        score: finalScore,
+        answers
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    setScore(finalScore);
+    toast.success("Exam submitted successfully!");
+  } catch (err) {
+    console.error("Submit failed:", err.response?.data || err.message);
+    toast.error(err.response?.data?.message || "Failed to submit exam. Your answers may not be saved.");
+    setSubmitted(false); // allow retry
+  }
+}, [submitted, exam, answers]);
   // Fetch exam
   useEffect(() => {
     const fetchExam = async () => {

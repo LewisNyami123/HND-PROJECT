@@ -38,7 +38,7 @@ function StudentDashboard() {
         <h3>Upcoming Exams</h3>
         {exams.length ? (
           <ul className="card-list">
-            {exams.map(exam => (
+            {exams.map((exam) => (
               <li key={exam._id} className="card-item">
                 <strong>{exam.title}</strong> — {exam.course} <br />
                 <span className="date">

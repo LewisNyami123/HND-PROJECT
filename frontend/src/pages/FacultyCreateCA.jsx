@@ -33,7 +33,7 @@ function FacultyCreateCA() {
     const fetchExams = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/faculty/my-exams", {
+        const res = await axios.get("http://localhost:5000/api/faculty/exams", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setExams(res.data);

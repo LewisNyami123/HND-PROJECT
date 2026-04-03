@@ -24,11 +24,11 @@ function AdminDashboard() {
     const fetchData = async () => {
       try {
         const [statsRes, usersRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/admin/stats", { headers }),
-          axios.get("http://localhost:5000/api/admin/users", { headers }),
+          axios.get("http://localhost:5000/api/admin/stats", { headers }),   // ✅ totals
+          axios.get("http://localhost:5000/api/admin/users", { headers }),   // ✅ all users
         ]);
-        setStats(statsRes.data);
-        setUsers(usersRes.data);
+        setStats(statsRes.data);   // object with students, faculty, exams, departments
+        setUsers(usersRes.data);   // array of users
         setLoading(false);
       } catch (err) {
         console.error("Error loading admin dashboard", err);

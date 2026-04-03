@@ -98,6 +98,7 @@ const getResultsForStudent = async (req, res) => {
   try {
     const results = await Result.find({ student: req.user._id })
       .populate("exam", "title course")
+      .populate("student", "name email department") 
       .sort({ submissionTime: -1 })
       .lean();
 

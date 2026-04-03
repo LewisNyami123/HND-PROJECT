@@ -33,9 +33,9 @@ function FacultyResults() {
           <tbody>
             {results.map(r => (
               <tr key={r._id}>
-                <td>{r.studentName}</td>
-                <td>{r.department}</td>
-                <td>{r.course}</td>
+                <td>{r.student?.name}</td>
+                <td>{r.student?.department}</td>
+                <td>{r.exam?.course}</td>
                 <td>{r.caScore}</td>
                 <td>{r.examScore}</td>
                 <td>{r.total}</td>

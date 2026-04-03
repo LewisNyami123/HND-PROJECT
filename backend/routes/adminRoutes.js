@@ -1,9 +1,7 @@
-// routes/admin.js
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { protect, restrictTo } = require('../middleware/authMiddleware');
+const { protect, restrictTo } = require("../middleware/authMiddleware");
 const {
   getAllResults,
   manageUsers,
@@ -11,27 +9,20 @@ const {
   getAnalytics,
   deleteUser,
   updateUserRole,
-} = require('../controllers/adminController');
+  getStats, // ✅ import new controller
+} = require("../controllers/adminController");
 
-// Admin only middleware
-const adminOnly = [protect, restrictTo('admin')];
+const adminOnly = [protect, restrictTo("admin")];
 
-// GET: View all results
-router.get('/results', adminOnly, getAllResults);
+// Existing routes...
+router.get("/results", adminOnly, getAllResults);
+router.get("/users", adminOnly, manageUsers);
+router.post("/exams", adminOnly, createExam);
+router.get("/analytics", adminOnly, getAnalytics);
+router.delete("/users/:id", adminOnly, deleteUser);
+router.patch("/users/:id/role", adminOnly, updateUserRole);
 
-// GET: Get all users (for management page)
-router.get('/users', adminOnly, manageUsers);
-
-// POST: Create new exam
-router.post('/exams', adminOnly, createExam);
-
-// GET: Analytics dashboard data
-router.get('/analytics', adminOnly, getAnalytics);
-
-// DELETE: Delete a user
-router.delete('/users/:id', adminOnly, deleteUser);
-
-// PATCH: Update user role (e.g., promote to faculty/admin)
-router.patch('/users/:id/role', adminOnly, updateUserRole);
+// ✅ New stats route
+router.get("/stats", adminOnly, getStats);
 
 module.exports = router;
