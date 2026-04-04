@@ -19,9 +19,7 @@ const app = express();
 // Connect Database
 connectDB();
 
-app.use(cors({ 
-  origin: '*'
- }));
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // Mount routers

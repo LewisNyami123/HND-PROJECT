@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import Layout from './components/Layout';
 import Exams from './pages/Exams';
 import Results from './pages/Result';
-import CountDownPage from './pages/CountDownPage';
+import CountDownPage from './pages/CountdownPage';
 import Profile from './pages/Profile';
 import FacultyCreateExam from './pages/FacultyCreateExam';
 import FacultyRooms from './pages/FacultyRooms';
