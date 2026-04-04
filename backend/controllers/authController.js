@@ -2,7 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const sendEmail = require('../utils/sendEmail');
+// const sendEmail = require('../utils/sendEmail');
 // const sendSMS = require('../utils/sendSMS'); // optional Twilio helper
 
 const registerUser = async (req, res) => {
@@ -15,7 +15,7 @@ const registerUser = async (req, res) => {
     }
 
     // Generate password if not provided
-    const plainPassword = password || crypto.randomBytes(6).toString("hex");
+    // const plainPassword = password || crypto.randomBytes(6).toString("hex");
 
     // Hash for storage
     const hashedPassword = await bcrypt.hash(plainPassword, 12);
@@ -24,11 +24,11 @@ const registerUser = async (req, res) => {
     await user.save();
 
     // Send credentials via email
-    await sendEmail(
-      email,
-      "Your Dashboard Login",
-      `Hello ${name},\n\nYour account has been created.\nEmail: ${email}\nPassword: ${plainPassword}\n\nPlease log in and change your password.`
-    );
+    // await sendEmail(
+    //   email,
+    //   "Your Dashboard Login",
+    //   `Hello ${name},\n\nYour account has been created.\nEmail: ${email}\nPassword: ${plainPassword}\n\nPlease log in and change your password.`
+    // );
 
     // Optionally send SMS if phone number is available
     // await sendSMS(user.phone, `Login: ${email}, Password: ${plainPassword}`);

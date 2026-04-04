@@ -1,0 +1,98 @@
+/* Container */
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eef2f7, #d9e4f5);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card */
+.register-form {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px; /* wider now */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 🔥 2 columns */
+  gap: 15px;
+}
+
+/* Title spans full width */
+.register-container h2 {
+  grid-column: span 2;
+  text-align: center;
+  color: #2c3e50;
+}
+
+/* Make section titles span full width */
+.register-form h4,
+.register-form hr {
+  grid-column: span 2;
+}
+
+/* Inputs */
+.register-form input,
+.register-form select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+/* Focus */
+.register-form input:focus,
+.register-form select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Full width fields */
+.full-width {
+  grid-column: span 2;
+}
+
+/* Button */
+.register-form button {
+  grid-column: span 2;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #007bff, #0056d2);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.register-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
+}
+
+/* Warning */
+.warning {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: #dc3545;
+}
+
+/* 📱 Mobile responsiveness */
+@media (max-width: 600px) {
+  .register-form {
+    grid-template-columns: 1fr; /* stack on mobile */
+  }
+
+  .register-container h2,
+  .register-form button,
+  .full-width {
+    grid-column: span 1;
+  }
+}

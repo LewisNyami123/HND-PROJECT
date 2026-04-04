@@ -19,7 +19,9 @@ const app = express();
 // Connect Database
 connectDB();
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ 
+  origin: '*'
+ }));
 app.use(express.json());
 
 // Mount routers
