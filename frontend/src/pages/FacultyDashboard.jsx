@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import "../styles/Dashboard.css";
 
 function FacultyDashboard() {
@@ -13,8 +13,8 @@ function FacultyDashboard() {
     const fetchData = async () => {
       try {
         const [examRes, resultRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/faculty/exams", { headers }),
-          axios.get("http://localhost:5000/api/faculty/results", { headers }),
+          api.get("/api/faculty/exams", { headers }),
+          api.get("/api/faculty/results", { headers }),
         ]);
         setExams(examRes.data);
         setResults(resultRes.data);

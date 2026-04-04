@@ -1,7 +1,7 @@
 import { FaPlus, FaTimesCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import "../styles/Faculty.css";
 
 function FacultyCreateCA() {
@@ -21,7 +21,7 @@ function FacultyCreateCA() {
     const fetchStudents = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/faculty/students", {
+        const res = await api.get("/api/faculty/students", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setStudents(res.data);
@@ -33,7 +33,7 @@ function FacultyCreateCA() {
     const fetchExams = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/faculty/exams", {
+        const res = await api.get("/api/faculty/exams", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setExams(res.data);
@@ -50,8 +50,8 @@ function FacultyCreateCA() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:5000/api/faculty/ca",
+      await api.post(
+        "/api/faculty/ca",
         caForm,
         { headers: { Authorization: `Bearer ${token}` } }
       );

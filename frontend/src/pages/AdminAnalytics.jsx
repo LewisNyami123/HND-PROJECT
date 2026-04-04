@@ -1,6 +1,7 @@
 import { FaChartPie } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import api from "../axiosInstance"
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
@@ -13,7 +14,7 @@ function AdminAnalytics() {
     const fetchAnalytics = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/admin/analytics", {
+        const res = await api.get("/api/admin/analytics", {
           headers: { Authorization: `Bearer ${token}` }
         });
 

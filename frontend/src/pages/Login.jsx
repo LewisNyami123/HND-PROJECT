@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import axios from "axios"
+import api from "../axiosInstance"
 import '../styles/Login.css'
 import LOGO from '../assets/LOGO DYHIP.jpg';
 import { toast } from "react-toastify";
@@ -19,7 +19,7 @@ const Login = () => {
       e.preventDefault();
       setLoading(true);
       try{
-      const response = await axios.post('http://localhost:5000/api/auth/login',{
+      const response = await api.post('/api/auth/login',{
         email,
         password,
         

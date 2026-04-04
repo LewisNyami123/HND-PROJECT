@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import { FaDatabase, FaPlus, FaTrash, FaEdit, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "../styles/Faculty.css";
@@ -31,7 +31,7 @@ const [isEditing, setIsEditing] = useState(false);           // flag for edit mo
        toast.error("No token found. Please log in again.");
     return;
     }
-        const res = await axios.get("http://localhost:5000/api/faculty/questions", {
+        const res = await api.get("/api/faculty/questions", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setQuestions(res.data);
@@ -55,7 +55,7 @@ const [isEditing, setIsEditing] = useState(false);           // flag for edit mo
   const handleSaveQuestion = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:5000/api/faculty/questions", formData, {
+      const res = await api.post("/api/faculty/questions", formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setQuestions(prev => [...prev, res.data]);
@@ -80,7 +80,7 @@ const [isEditing, setIsEditing] = useState(false);           // flag for edit mo
   const handleDeleteQuestion = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/faculty/questions/${id}`, {
+      await api.delete(`/api/faculty/questions/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setQuestions(prev => prev.filter(q => q._id !== id));
@@ -116,8 +116,8 @@ const removeOption = (index) => {
 const handleUpdateQuestion = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.put(
-      `http://localhost:5000/api/faculty/questions/${editingQuestion._id}`,
+    const res = await api.put(
+      `/api/faculty/questions/${editingQuestion._id}`,
       formData,
       { headers: { Authorization: `Bearer ${token}` } }
     );

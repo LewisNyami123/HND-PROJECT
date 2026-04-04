@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import { FaChartLine, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import "../styles/Results.css";
 
@@ -17,7 +17,7 @@ useEffect(() => {
         return;
       }
 
-      const res = await axios.get("http://localhost:5000/api/results", {
+      const res = await api.get("/api/results", {
         headers: { Authorization: `Bearer ${token}` },
       });
 

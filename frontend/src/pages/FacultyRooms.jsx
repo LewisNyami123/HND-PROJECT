@@ -1,7 +1,7 @@
 import { FaUniversity, FaPlus, FaTimesCircle } from "react-icons/fa";
 import "../styles/Faculty.css";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import { toast } from "react-toastify";
 
 function FacultyRooms() {
@@ -19,7 +19,7 @@ function FacultyRooms() {
     const fetchRooms = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/rooms", {
+        const res = await api.get("/api/rooms", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setRooms(res.data);
@@ -35,8 +35,8 @@ function FacultyRooms() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:5000/api/rooms",
+      await api.post(
+        "/api/rooms",
         roomForm,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -45,7 +45,7 @@ function FacultyRooms() {
       setRoomForm({ name: "", capacity: "", status: "Available" });
 
       // Refresh room list
-      const res = await axios.get("http://localhost:5000/api/rooms", {
+      const res = await api.get("/api/rooms", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRooms(res.data);

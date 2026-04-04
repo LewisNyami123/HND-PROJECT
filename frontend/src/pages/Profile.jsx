@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FaUserGraduate, FaEdit, FaLock } from "react-icons/fa";
 import "../styles/Profile.css";
 import { toast } from "react-toastify";
-import axios from "axios";
+import api from "../axiosInstance"
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -18,7 +18,7 @@ function Profile() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/profile/me", {
+        const res = await api.get("/api/profile/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -61,7 +61,7 @@ function Profile() {
         formData.append("photo", photoFile);
       }
 
-      const res = await axios.put("http://localhost:5000/api/profile/me", formData, {
+      const res = await api.put("/api/profile/me", formData, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -80,7 +80,7 @@ function Profile() {
   const handleChangePassword = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.patch("http://localhost:5000/api/users/change-password",
+      await api.patch("/api/users/change-password",
         { oldPassword, newPassword },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import { toast } from "react-toastify";
 import "../styles/Register.css";
 const Register = () => {
@@ -47,8 +47,8 @@ const Register = () => {
         department: form.department
       };
 
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+      const res = await api.post(
+        "/api/auth/register",
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );

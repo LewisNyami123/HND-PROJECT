@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../axiosInstance"
 import "../styles/Exams.css";
 import Countdown from "./Countdown";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ function Exams() {
     const fetchExams = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/exams", {
+        const res = await api.get("/api/exams", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setExams(res.data);

@@ -1,7 +1,7 @@
 import { FaPlus, FaTimesCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import "../styles/Faculty.css";
 
 function FacultyCreateExam() {
@@ -27,7 +27,7 @@ useEffect(() => {
   const fetchExams = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/faculty/exams", {
+      const res = await api.get("/api/faculty/exams", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setExams(res.data); // populate exams list
@@ -44,7 +44,7 @@ useEffect(() => {
     const fetchQuestions = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/faculty/questions", {
+        const res = await api.get("/api/faculty/questions", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setQuestions(res.data);
@@ -60,8 +60,8 @@ useEffect(() => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.post(
-        "http://localhost:5000/api/faculty/exams",
+      const res = await api.post(
+        "/api/faculty/exams",
         examForm,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -82,8 +82,8 @@ useEffect(() => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.put(
-        `http://localhost:5000/api/faculty/exams/${editingExam._id}`,
+      const res = await api.put(
+        `/api/faculty/exams/${editingExam._id}`,
         examForm,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -122,8 +122,8 @@ useEffect(() => {
   try {
     setLoading(true);
     const token = localStorage.getItem("token");
-    await axios.delete(
-      `http://localhost:5000/api/faculty/exams/${examId}`,
+    await api.delete(
+      `/api/faculty/exams/${examId}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 

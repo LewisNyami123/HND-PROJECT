@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import Countdown from "./Countdown";
 import "../styles/Exams.css";
 
@@ -9,7 +9,7 @@ function CountDownPage() {
   useEffect(() => {
     const fetchExams = async () => {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/exams", {
+      const res = await api.get("/api/exams", {
         headers: { Authorization: `Bearer ${token}` },
       });
 

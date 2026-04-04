@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import {
   FaUser,
   FaEnvelope,
@@ -21,7 +21,7 @@ function AdminUsers() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/admin/users", {
+      const res = await api.get("/api/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
@@ -46,7 +46,7 @@ function AdminUsers() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/admin/users/${id}`, {
+      await api.delete(`/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.filter((u) => u._id !== id));
@@ -69,8 +69,8 @@ function AdminUsers() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.patch(
-        `http://localhost:5000/api/admin/users/${id}/role`,
+      await api.patch(
+        `/api/admin/users/${id}/role`,
         { role: nextRole },
         { headers: { Authorization: `Bearer ${token}` } }
       );

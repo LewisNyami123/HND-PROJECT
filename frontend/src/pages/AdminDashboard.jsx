@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import "../styles/Dashboard.css";
 import {
   FaUsers,
@@ -24,8 +24,8 @@ function AdminDashboard() {
     const fetchData = async () => {
       try {
         const [statsRes, usersRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/admin/stats", { headers }),   // ✅ totals
-          axios.get("http://localhost:5000/api/admin/users", { headers }),   // ✅ all users
+          api.get("/api/admin/stats", { headers }),   // ✅ totals
+          api.get("/api/admin/users", { headers }),   // ✅ all users
         ]);
         setStats(statsRes.data);   // object with students, faculty, exams, departments
         setUsers(usersRes.data);   // array of users

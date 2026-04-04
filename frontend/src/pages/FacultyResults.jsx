@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import "../styles/Dashboard.css";
 
 function FacultyResults() {
@@ -11,7 +11,7 @@ function FacultyResults() {
 
     const fetchResults = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/faculty/results", { headers });
+        const res = await api.get("/api/faculty/results", { headers });
         setResults(res.data);
       } catch (err) {
         console.error("Error loading results", err);

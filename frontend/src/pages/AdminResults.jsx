@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import {
   FaUser,
   FaBookOpen,
@@ -18,7 +18,7 @@ function AdminResults() {
     const fetchResults = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/admin/results", {
+        const res = await api.get("/api/admin/results", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setResults(res.data);

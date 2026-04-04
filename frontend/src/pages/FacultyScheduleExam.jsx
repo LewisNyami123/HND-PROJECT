@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../axiosInstance"
 import { toast } from "react-toastify";
 import "../styles/Faculty.css";
 import {jwtDecode} from "jwt-decode";
@@ -34,7 +34,7 @@ function FacultyScheduleExam() {
     const fetchRooms = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/rooms", {
+        const res = await api.get("/api/rooms", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setRooms(res.data);
@@ -57,7 +57,7 @@ function FacultyScheduleExam() {
     try {
       const token = localStorage.getItem("token");
       console.log('sending token',token)
-      await axios.post("http://localhost:5000/api/exams/schedule", form, {
+      await api.post("/api/exams/schedule", form, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Exam scheduled successfully!");

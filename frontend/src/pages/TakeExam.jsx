@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../axiosInstance"
 import { FaClock, FaPaperPlane, FaCheckCircle } from "react-icons/fa";
 import "../styles/TakeExam.css";
 import { toast } from "react-toastify";
@@ -56,8 +56,8 @@ function TakeExam() {
       return;
     }
 
-    await axios.post(
-      "http://localhost:5000/api/results",
+    await api.post(
+      "/api/results",
       {
         examId: exam._id,   // backend expects examId
         studentId,          // backend expects studentId
@@ -80,7 +80,7 @@ function TakeExam() {
     const fetchExam = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:5000/api/exams/take/${examId}`, {
+        const res = await api.get(`/api/exams/take/${examId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setExam(res.data);
