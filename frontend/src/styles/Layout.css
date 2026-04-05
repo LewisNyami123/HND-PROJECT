@@ -372,7 +372,7 @@ body {
   .sidebar {
     width: 85%;           /* Better width for phones */
     max-width: 320px;
-    left: -100%;
+    left: -1000%;
   }
 
   .main-content {
