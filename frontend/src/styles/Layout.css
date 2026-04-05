@@ -10,8 +10,10 @@ body {
   font-family: 'Inter', sans-serif;
   background: #f5f7fa;
   color: #2c3e50;
+  line-height: 1.5;
 }
 
+/* ====================== LAYOUT ====================== */
 .layout {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -23,16 +25,17 @@ body {
 /* ====================== HEADER ====================== */
 .header {
   grid-column: 1 / -1;
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  background: white;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 200;
   position: sticky;
   top: 0;
+  height: 70px;
 }
 
 .header-left {
@@ -45,211 +48,100 @@ body {
   display: none;
   background: none;
   border: none;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: #2c3e50;
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .sidebar-toggle:hover {
-  background: #f0f1f3;
+  background: #f8fafc;
   color: #2e7d32;
 }
 
 .header-brand img {
-  height: 50px;
+  height: 48px;
   width: auto;
-
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 16px;
 }
 
 .notification-btn,
 .profile-btn {
   background: none;
   border: none;
-  font-size: 1.2rem;
-  color: #666;
+  font-size: 1.25rem;
+  color: #64748b;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 8px;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .notification-btn:hover,
 .profile-btn:hover {
-  background: #f0f1f3;
+  background: #f8fafc;
   color: #2e7d32;
 }
 
 .notification-badge {
   position: absolute;
-  top: 2px;
-  right: 0;
+  top: -2px;
+  right: -2px;
   background: #ef4444;
   color: white;
-  font-size: 0.65rem;
-  padding: 2px 6px;
+  font-size: 0.7rem;
+  padding: 1px 5px;
   border-radius: 10px;
   font-weight: 600;
-}
-
-/* ====================== NOTIFICATION DROPDOWN ====================== */
-.notification-wrapper {
-  position: relative;
-}
-
-.notification-dropdown {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-  width: 320px;
-  max-height: 400px;
-  overflow-y: auto;
-  z-index: 1000;
-  border: 1px solid #e5e7eb;
-}
-
-.notification-header {
-  padding: 16px 16px 12px;
-  font-weight: 600;
-  color: #2c3e50;
-  border-bottom: 1px solid #f0f1f3;
-  font-size: 0.95rem;
-}
-
-.notification-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.notification-item {
-  padding: 12px 16px;
-  font-size: 0.9rem;
-  color: #555;
-  border-bottom: 1px solid #f9fafb;
-  line-height: 1.5;
-  transition: background 0.2s ease;
-}
-
-.notification-item:last-child {
-  border-bottom: none;
-}
-
-.notification-item:hover {
-  background: #f9fafb;
-}
-
-.notification-empty {
-  padding: 24px 16px;
+  min-width: 16px;
   text-align: center;
-  color: #999;
-  font-size: 0.9rem;
-}
-
-/* ====================== PROFILE DROPDOWN ====================== */
-.profile-dropdown {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-  width: 200px;
-  z-index: 1000;
-  border: 1px solid #e5e7eb;
-  overflow: hidden;
-}
-
-.profile-menu-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  text-decoration: none;
-  color: #555;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-.profile-menu-item:hover {
-  background: #f9fafb;
-  color: #2e7d32;
-}
-
-.profile-menu-item svg {
-  font-size: 1rem;
-  min-width: 18px;
-}
-
-.logout-btn {
-  border-top: 1px solid #f0f1f3;
-  color: #ef4444;
-}
-
-.logout-btn:hover {
-  background: #fee2e2;
-  color: #dc2626;
 }
 
 /* ====================== SIDEBAR ====================== */
 .sidebar {
-  grid-row: 2;
   background: #ffffff;
   border-right: 1px solid #e5e7eb;
-  padding: 20px 0;
+  padding: 24px 0;
   overflow-y: auto;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 0 12px;
+  gap: 6px;
+  padding: 0 16px;
 }
 
 .nav-link {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 14px;
+  padding: 14px 18px;
   text-decoration: none;
   color: #555;
   border-radius: 10px;
-  transition: all 0.3s ease;
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-weight: 500;
-  position: relative;
+  transition: all 0.25s ease;
 }
 
 .nav-icon {
-  font-size: 1.1rem;
-  color: #999;
-  transition: color 0.3s ease;
-  min-width: 20px;
+  font-size: 1.2rem;
+  color: #94a3b8;
+  min-width: 24px;
 }
 
 .nav-link:hover {
-  background: #f0f1f3;
+  background: #f8fafc;
   color: #2c3e50;
 }
 
@@ -258,11 +150,11 @@ body {
 }
 
 .nav-link.active {
-  background: linear-gradient(135deg, #e8f5e9 0%, #f0f7f0 100%);
+  background: #e8f5e9;
   color: #2e7d32;
   font-weight: 600;
   border-left: 4px solid #2e7d32;
-  padding-left: 12px;
+  padding-left: 14px;
 }
 
 .nav-link.active .nav-icon {
@@ -271,65 +163,37 @@ body {
 
 /* ====================== MAIN CONTENT ====================== */
 .main-content {
-  grid-row: 2;
-  grid-column: 2;
   padding: 32px;
   background: #f5f7fa;
   overflow-y: auto;
 }
 
-/* ====================== SCROLLBAR STYLING ====================== */
-.sidebar::-webkit-scrollbar,
-.main-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track,
-.main-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb,
-.main-content::-webkit-scrollbar-thumb {
-  background: #ddd;
-  border-radius: 3px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover,
-.main-content::-webkit-scrollbar-thumb:hover {
-  background: #bbb;
-}
-
-/* ====================== RESPONSIVE DESIGN ====================== */
 /* ====================== RESPONSIVE DESIGN ====================== */
 
-/* Large tablets */
 @media (max-width: 1024px) {
   .layout {
     grid-template-columns: 240px 1fr;
   }
   .main-content {
-    padding: 24px;
+    padding: 28px;
   }
 }
 
-/* Tablets & Small Laptops */
+/* ====================== TABLET ====================== */
 @media (max-width: 768px) {
   .layout {
     grid-template-columns: 1fr;
-    grid-template-rows: 70px auto 1fr;
+    grid-template-rows: 70px 1fr;
   }
 
   .sidebar {
     position: fixed;
-    left: -280px;
+    left: -290px;
     top: 70px;
-    width: 280px;
+    width: 290px;
     height: calc(100vh - 70px);
-    background: white;
     z-index: 1000;
-    box-shadow: 6px 0 25px rgba(0, 0, 0, 0.18);
-    transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.2);
     overflow-y: auto;
   }
 
@@ -337,14 +201,11 @@ body {
     left: 0;
   }
 
-  /* Dark overlay when sidebar is open */
+  /* Overlay */
   .overlay {
     position: fixed;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 70px);
-    background: rgba(0, 0, 0, 0.5);
+    inset: 70px 0 0 0;
+    background: rgba(0, 0, 0, 0.55);
     z-index: 999;
     opacity: 0;
     visibility: hidden;
@@ -357,25 +218,60 @@ body {
   }
 
   .main-content {
-    grid-row: 3;
-    padding: 20px;
-    transition: margin-left 0.35s ease;   /* smooth shift */
+    padding: 24px 20px;
+    grid-row: 2;
   }
 
   .sidebar-toggle {
-    display: flex;
+    display: block;
+  }
+
+  .header {
+    padding: 0 16px;
+  }
+
+  .header-right {
+    gap: 12px;
   }
 }
 
-/* Mobile Phones - Final Fix */
+/* ====================== MOBILE ====================== */
 @media (max-width: 480px) {
   .sidebar {
-    width: 65%;           /* Better width for phones */
+    width: 82%;
     max-width: 320px;
     left: -100%;
-   
   }
 
+  .main-content {
+    padding: 20px 16px;
+  }
+
+  .header {
+    padding: 0 14px;
+  }
+
+  .header-brand img {
+    height: 42px;
+  }
+
+  .nav-link {
+    padding: 13px 16px;
+    font-size: 0.95rem;
+  }
+
+  .notification-dropdown {
+    width: 290px;
+    right: -10px;
+  }
+
+  .profile-dropdown {
+    width: 190px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
   .main-content {
     padding: 16px 12px;
   }
@@ -385,6 +281,7 @@ body {
   }
 
   .nav-link {
-    padding: 14px 16px;
+    padding: 12px 14px;
+    gap: 12px;
   }
 }
