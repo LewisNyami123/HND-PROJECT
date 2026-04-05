@@ -373,7 +373,7 @@ body {
     width: 85%;           /* Better width for phones */
     max-width: 320px;
     left: -100%;
-    visibility: hidden;
+   
   }
 
   .main-content {
