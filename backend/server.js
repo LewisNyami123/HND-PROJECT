@@ -20,7 +20,7 @@ const app = express();
 connectDB();
 
 // cors configuration
-app.use(cors({ origin: ["http://localhost:5000", "https://exam-system-tan.vercel.app"],
+app.use(cors({ origin: ["http://localhost:", "https://exam-system-tan.vercel.app"],
   credentials: true
  }));
 app.use(express.json());
