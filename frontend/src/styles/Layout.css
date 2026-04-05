@@ -370,7 +370,7 @@ body {
 /* Mobile Phones - Final Fix */
 @media (max-width: 480px) {
   .sidebar {
-    width: 85%;           /* Better width for phones */
+    width: 65%;           /* Better width for phones */
     max-width: 320px;
     left: -100%;
    
