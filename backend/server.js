@@ -19,7 +19,10 @@ const app = express();
 // Connect Database
 connectDB();
 
-app.use(cors({ origin: "*" }));
+// cors configuration
+app.use(cors({ origin: ["http://localhost:5000", "https://exam-system-tan.vercel.app"],
+  credentials: true
+ }));
 app.use(express.json());
 
 // Mount routers
